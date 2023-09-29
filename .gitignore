@@ -1,5 +1,7 @@
-# basic
-tpy
+# dirs
+build
+test/test
+test/test.cpp
 
 # python
 __pycache__/

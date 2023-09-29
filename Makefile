@@ -1,11 +1,15 @@
 G++         = g++
 SRC         = src/main.cpp
-TARGET      = tpy
-TEST        = test/test.py
-TEST_TARGET = _test 
+HEADERS     = src/utils.cpp src/parsing.cpp
+FLAGS       = -std=c++17
+TARGET      = build/tpy
+TEST        = test/test0.py
+TEST_SRC    = test/test.cpp
+TEST_TARGET = test/test 
 
 $(TARGET): $(SRC)
-	$(G++) $(SRC) -o $(TARGET)
+	$(G++) $(SRC) $(HEADERS) -o $(TARGET) $(FLAGS)
 
 run: 
-	./$(TARGET) $(TEST) -o $(TEST_TARGET)
+	./$(TARGET) $(TEST) $(TEST_TARGET)
+	swg_tmr ./$(TEST_TARGET)

@@ -1,8 +1,4 @@
-#include <iostream>
-#include <chrono>
-#include <ctime>
-#include <algorithm>
-#include <string>
+#include "utils.hpp"
 
 #define OPEN_LOG    "["
 #define CLOSE_LOG   "]"
@@ -19,17 +15,22 @@
 
 using std::string;
 
-string usage ="usage:\n    tpy <src.py> -o <output>\n";
+static string _usage = "usage:\n    tpy <src.py> <output>\n";
 
 string base_wrap(string content, string begin, string end) {
     return begin + content + end;    
 }
 
 string get_current_time() {
-    auto now = std::chrono::system_clock::now();
-    std::time_t current_time = std::chrono::system_clock::to_time_t(now);
-    string result = string(std::ctime(&current_time));
-    return  result.erase(result.size()-1);
+    auto current_time_point = std::chrono::system_clock::now();
+    std::time_t current_time = std::chrono::system_clock::to_time_t(current_time_point);
+    struct std::tm *time_info = std::localtime(&current_time);
+    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(
+        current_time_point.time_since_epoch()
+    ).count() % 1000;
+    std::ostringstream oss;
+    oss << std::put_time(time_info, "%Y-%m-%d %H:%M:%S.") << std::setfill('0') << std::setw(3) << milliseconds;
+    return oss.str();
 }
 
 void base_log(string level, string msg, string color, int std_err) {
@@ -51,9 +52,12 @@ void log_err(string msg) {
     base_log("ERRR", msg, RED, 1);
 }
 
+void usage() {
+    log_err(_usage);
+}
+
 void error(string msg) {
     log_err(msg);
-    std::cerr << usage << std::endl;
     exit(EXIT_FAILURE);
 }
 
