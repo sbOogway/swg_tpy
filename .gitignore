@@ -1,8 +1,8 @@
+# basic
+tpy
+
 # python
 __pycache__/
-
-# rust 
-target/
 
 # enviroment
 .env
@@ -13,10 +13,6 @@ target/
 # binaries
 *.exe
 *.dll
-
-# java shit
-*.class
-*.tasty
 
 # IDEs
 .vscode/
